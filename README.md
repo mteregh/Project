@@ -12,8 +12,11 @@ This repository contains all the required deliverables for Assignment 1:
 Team Members
 
 --> Valentina González
+
 --> María Teresa Guerra
+
 --> María Olivia Urzúa
+
 
 Data Model
 

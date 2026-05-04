@@ -1,0 +1,11 @@
+<div class="container mt-4">
+  <h1>Venues</h1>
+
+  <ul class="list-group">
+    <% @venues.each do |v| %>
+      <li class="list-group-item">
+        <%= link_to v.name, venue_path(v) %>
+      </li>
+    <% end %>
+  </ul>
+</div>

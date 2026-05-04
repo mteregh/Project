@@ -1,0 +1,11 @@
+<div class="container mt-4">
+  <h1>Categories</h1>
+
+  <ul class="list-group">
+    <% @categories.each do |c| %>
+      <li class="list-group-item">
+        <%= link_to c.name, category_path(c) %>
+      </li>
+    <% end %>
+  </ul>
+</div>

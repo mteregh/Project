@@ -1,0 +1,29 @@
+<div class="container mt-4">
+  <h1><%= @event.title %></h1>
+
+  <p><%= @event.description %></p>
+  <p><strong>Status:</strong> <%= @event.status %></p>
+  <p><strong>Start:</strong> <%= @event.start_date %></p>
+  <p><strong>End:</strong> <%= @event.end_date %></p>
+
+  <p><strong>Category:</strong>
+    <%= link_to @event.category.name, category_path(@event.category) %>
+  </p>
+
+  <p><strong>Venue:</strong>
+    <%= link_to @event.venue.name, venue_path(@event.venue) %>
+  </p>
+
+  <p><strong>Organizer:</strong>
+    <%= link_to @event.user.name, user_path(@event.user) %>
+  </p>
+
+  <h3>Reviews</h3>
+  <ul>
+    <% @event.reviews.each do |review| %>
+      <li>
+        <%= review.rating %> ⭐ - <%= review.comment %>
+      </li>
+    <% end %>
+  </ul>
+</div>

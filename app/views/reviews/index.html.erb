@@ -1,0 +1,11 @@
+<div class="container mt-4">
+  <h1>Reviews</h1>
+
+  <ul class="list-group">
+    <% @reviews.each do |r| %>
+      <li class="list-group-item">
+        <%= link_to "Review #{r.id}", review_path(r) %>
+      </li>
+    <% end %>
+  </ul>
+</div>

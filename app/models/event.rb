@@ -5,6 +5,8 @@ class Event < ApplicationRecord
   has_many :registrations
   has_many :reviews
 
+  has_rich_text :description
+
   validates :title, presence: true
   validates :status, presence: true
   validates :start_date, presence: true
@@ -13,7 +15,7 @@ class Event < ApplicationRecord
   
   validate :end_date_after_start_date
 
-  enum :status, { draft: "draft", published: "published", cancelled: "cancelled", completed: "completed" }
+  enum :status, { draft: "draft", published: "published", cancelled: "cancelled", completed: "completed", ongoing: "ongoing" }
 
   private
 

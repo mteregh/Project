@@ -23,10 +23,10 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
     @event.user = current_user
-    @event.status = :draft 
+    @event.status = :draft
 
     if @event.save
-      redirect_to @event, notice: "Evento creado exitosamente."
+      redirect_to @event, notice: "Event created successfully."
     else
       render :new, status: :unprocessable_entity
     end
@@ -34,17 +34,17 @@ class EventsController < ApplicationController
 
   def edit
     unless @event.user_id == current_user&.id
-      redirect_to @event, alert: "No tienes permiso para editar este evento." and return
+      redirect_to @event, alert: "You do not have permission to edit this event." and return
     end
   end
 
   def update
     unless @event.user_id == current_user&.id
-      redirect_to @event, alert: "No tienes permiso para editar este evento." and return
+      redirect_to @event, alert: "You do not have permission to edit this event." and return
     end
 
     if @event.update(event_params)
-      redirect_to @event, notice: "Evento actualizado exitosamente."
+      redirect_to @event, notice: "Event updated successfully."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -52,40 +52,40 @@ class EventsController < ApplicationController
 
   def destroy
     unless @event.user_id == current_user&.id
-      redirect_to events_path, alert: "No tienes permiso para eliminar este evento." and return
+      redirect_to events_path, alert: "You do not have permission to delete this event." and return
     end
 
     @event.destroy
-    redirect_to events_path, notice: "Evento eliminado."
+    redirect_to events_path, notice: "Event deleted."
   end
 
   def publish
     unless @event.user_id == current_user&.id
-      redirect_to @event, alert: "No tienes permiso para publicar este evento." and return
+      redirect_to @event, alert: "You do not have permission to publish this event." and return
     end
 
     unless @event.draft?
-      redirect_to @event, alert: "Solo puedes publicar eventos en borrador." and return
+      redirect_to @event, alert: "Only draft events can be published." and return
     end
 
     if @event.publish!
-      redirect_to @event, notice: "Evento publicado exitosamente."
+      redirect_to @event, notice: "Event published successfully."
     else
-      redirect_to @event, alert: "No se pudo publicar el evento."
+      redirect_to @event, alert: "The event could not be published."
     end
   end
 
   def cancel
     unless @event.user_id == current_user&.id
-      redirect_to @event, alert: "No tienes permiso para cancelar este evento." and return
+      redirect_to @event, alert: "You do not have permission to cancel this event." and return
     end
 
     unless @event.draft? || @event.published?
-      redirect_to @event, alert: "Este evento no puede ser cancelado." and return
+      redirect_to @event, alert: "This event cannot be cancelled." and return
     end
 
     @event.cancel!
-    redirect_to @event, notice: "Evento cancelado. Todas las registraciones fueron anuladas."
+    redirect_to @event, notice: "Event cancelled. All registrations were cancelled."
   end
 
   private

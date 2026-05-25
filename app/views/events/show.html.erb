@@ -1,12 +1,12 @@
 <div class="container mt-4">
 
-  <%# Flash messages %>
   <% if notice %>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
       <%= notice %>
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
   <% end %>
+
   <% if alert %>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
       <%= alert %>
@@ -14,7 +14,6 @@
     </div>
   <% end %>
 
-  <%# Header del evento %>
   <div class="d-flex justify-content-between align-items-start mb-3">
     <h1><%= @event.title %></h1>
     <span class="badge fs-6
@@ -26,93 +25,90 @@
     </span>
   </div>
 
-  <%# Detalles del evento %>
   <div class="card mb-4">
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-          <p><strong>Categoría:</strong>
+          <p><strong>Category:</strong>
             <%= link_to @event.category.name, category_path(@event.category) %>
           </p>
-          <p><strong>Lugar:</strong>
+          <p><strong>Venue:</strong>
             <%= link_to @event.venue.name, venue_path(@event.venue) %>
           </p>
-          <p><strong>Organizador:</strong>
+          <p><strong>Organizer:</strong>
             <%= link_to @event.user.name, user_path(@event.user) %>
           </p>
         </div>
+
         <div class="col-md-6">
-          <p><strong>Inicio:</strong> <%= @event.start_date.strftime("%d/%m/%Y %H:%M") %></p>
-          <p><strong>Fin:</strong> <%= @event.end_date.strftime("%d/%m/%Y %H:%M") %></p>
-          <p><strong>Capacidad:</strong>
-            <%= @registrations_count %> / <%= @event.max_attendees %> inscritos
+          <p><strong>Start:</strong> <%= @event.start_date.strftime("%d/%m/%Y %H:%M") %></p>
+          <p><strong>End:</strong> <%= @event.end_date.strftime("%d/%m/%Y %H:%M") %></p>
+          <p><strong>Capacity:</strong>
+            <%= @registrations_count %> / <%= @event.max_attendees %> registered
             <% if @available_spots > 0 %>
-              <span class="text-success">(<%= @available_spots %> disponibles)</span>
+              <span class="text-success">(<%= @available_spots %> available)</span>
             <% else %>
-              <span class="text-danger">(Lleno)</span>
+              <span class="text-danger">(Full)</span>
             <% end %>
           </p>
         </div>
       </div>
 
       <hr>
-      <h5>Descripción</h5>
+      <h5>Description</h5>
       <%= @event.description %>
     </div>
   </div>
 
-  <%# Botones del organizador %>
   <% if current_user && @event.user_id == current_user.id %>
     <div class="mb-4 d-flex gap-2 flex-wrap">
       <% if @event.draft? %>
-        <%= link_to "Editar", edit_event_path(@event), class: "btn btn-secondary" %>
-        <%= button_to "Publicar", publish_event_path(@event), method: :patch, class: "btn btn-success" %>
-        <%= button_to "Cancelar evento", cancel_event_path(@event), method: :patch, class: "btn btn-danger",
-            data: { turbo_confirm: "¿Seguro que deseas cancelar este evento?" } %>
+        <%= link_to "Edit", edit_event_path(@event), class: "btn btn-secondary" %>
+        <%= button_to "Publish", publish_event_path(@event), method: :patch, class: "btn btn-success" %>
+        <%= button_to "Cancel Event", cancel_event_path(@event), method: :patch, class: "btn btn-danger",
+            data: { turbo_confirm: "Are you sure you want to cancel this event?" } %>
       <% elsif @event.published? %>
-        <%= link_to "Editar", edit_event_path(@event), class: "btn btn-secondary" %>
-        <%= button_to "Cancelar evento", cancel_event_path(@event), method: :patch, class: "btn btn-danger",
-            data: { turbo_confirm: "¿Seguro? Se cancelarán todas las inscripciones." } %>
+        <%= link_to "Edit", edit_event_path(@event), class: "btn btn-secondary" %>
+        <%= button_to "Cancel Event", cancel_event_path(@event), method: :patch, class: "btn btn-danger",
+            data: { turbo_confirm: "Are you sure? All registrations will be cancelled." } %>
       <% end %>
     </div>
   <% end %>
 
-  <%# Botón de registro para otros usuarios %>
   <% if current_user && @event.user_id != current_user.id %>
     <div class="mb-4">
       <% if @event.published? %>
         <% if @user_registration.nil? %>
-          <%= button_to "Registrarme", event_registrations_path(@event),
+          <%= button_to "Register", event_registrations_path(@event),
               method: :post, class: "btn btn-primary" %>
           <% if @event.full? %>
-            <small class="text-muted ms-2">El evento está lleno — serás puesto en lista de espera.</small>
+            <small class="text-muted ms-2">The event is full — you will be added to the waitlist.</small>
           <% end %>
         <% elsif @user_registration.confirmed? %>
-          <span class="badge bg-success fs-6">✓ Inscrito</span>
-          <%= button_to "Cancelar mi inscripción",
+          <span class="badge bg-success fs-6">✓ Registered</span>
+          <%= button_to "Cancel My Registration",
               event_registration_path(@event, @user_registration),
               method: :delete, class: "btn btn-outline-danger btn-sm ms-2",
-              data: { turbo_confirm: "¿Seguro que deseas cancelar tu inscripción?" } %>
+              data: { turbo_confirm: "Are you sure you want to cancel your registration?" } %>
         <% elsif @user_registration.waitlisted? %>
-          <span class="badge bg-warning text-dark fs-6">⏳ En lista de espera</span>
-          <%= button_to "Salir de la lista",
+          <span class="badge bg-warning text-dark fs-6">⏳ Waitlisted</span>
+          <%= button_to "Leave Waitlist",
               event_registration_path(@event, @user_registration),
               method: :delete, class: "btn btn-outline-secondary btn-sm ms-2" %>
         <% end %>
       <% elsif @event.draft? %>
-        <span class="text-muted">Este evento aún no está publicado.</span>
+        <span class="text-muted">This event has not been published yet.</span>
       <% elsif @event.ongoing? %>
-        <span class="text-muted">Este evento ya está en curso. No se aceptan nuevas inscripciones.</span>
+        <span class="text-muted">This event is already in progress. New registrations are not accepted.</span>
       <% elsif @event.completed? %>
-        <span class="text-muted">Este evento ya finalizó.</span>
+        <span class="text-muted">This event has already ended.</span>
       <% elsif @event.cancelled? %>
-        <span class="text-danger">Este evento fue cancelado.</span>
+        <span class="text-danger">This event was cancelled.</span>
       <% end %>
     </div>
   <% end %>
 
-  <%# Sección de reseñas %>
-  <h3 class="mt-4">Reseñas</h3>
+  <h3 class="mt-4">Reviews</h3>
 
   <% if @reviews.any? %>
     <% @reviews.each do |review| %>
@@ -127,18 +123,17 @@
           </div>
           <p class="mb-0 mt-1"><%= review.comment %></p>
           <% if current_user && review.user_id == current_user.id %>
-            <%= button_to "Eliminar", event_review_path(@event, review),
+            <%= button_to "Delete", event_review_path(@event, review),
                 method: :delete, class: "btn btn-sm btn-outline-danger mt-2",
-                data: { turbo_confirm: "¿Eliminar esta reseña?" } %>
+                data: { turbo_confirm: "Delete this review?" } %>
           <% end %>
         </div>
       </div>
     <% end %>
   <% else %>
-    <p class="text-muted">Todavía no hay reseñas para este evento.</p>
+    <p class="text-muted">There are no reviews for this event yet.</p>
   <% end %>
 
-  <%# Formulario para dejar reseña %>
   <% if current_user && @event.completed? %>
     <% confirmed = @event.registrations.exists?(user_id: current_user.id, status: "confirmed") %>
     <% already_reviewed = @event.reviews.exists?(user_id: current_user.id) %>
@@ -146,18 +141,20 @@
     <% if confirmed && !already_reviewed %>
       <div class="card mt-3">
         <div class="card-body">
-          <h5 class="card-title">Deja tu reseña</h5>
+          <h5 class="card-title">Leave a Review</h5>
           <%= form_with url: event_reviews_path(@event), method: :post do |f| %>
             <div class="mb-3">
-              <%= f.label :rating, "Calificación (1–5)" %>
-              <%= f.number_field :rating, min: 1, max: 5, required: true, class: "form-control", placeholder: "ej: 4" %>
+              <%= f.label :rating, "Rating (1–5)" %>
+              <%= f.number_field :rating, min: 1, max: 5, required: true, class: "form-control", placeholder: "e.g. 4" %>
             </div>
+
             <div class="mb-3">
-              <%= f.label :comment, "Comentario" %>
+              <%= f.label :comment, "Comment" %>
               <%= f.text_area :comment, required: true, class: "form-control", rows: 3,
-                  placeholder: "Cuéntanos tu experiencia..." %>
+                  placeholder: "Tell us about your experience..." %>
             </div>
-            <%= f.submit "Publicar reseña", class: "btn btn-primary" %>
+
+            <%= f.submit "Submit Review", class: "btn btn-primary" %>
           <% end %>
         </div>
       </div>
@@ -165,7 +162,7 @@
   <% end %>
 
   <div class="mt-4">
-    <%= link_to "← Volver a eventos", events_path, class: "btn btn-outline-secondary" %>
+    <%= link_to "← Back to Events", events_path, class: "btn btn-outline-secondary" %>
   </div>
 
 </div>

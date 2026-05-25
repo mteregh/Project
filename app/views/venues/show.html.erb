@@ -1,0 +1,13 @@
+<div class="container mt-4">
+  <h1><%= @venue.name %></h1>
+
+  <p><strong>Location:</strong> <%= @venue.location %></p>
+  <p><strong>Capacity:</strong> <%= @venue.capacity %></p>
+
+  <h3>Events</h3>
+  <ul>
+    <% @venue.events.each do |event| %>
+      <li><%= link_to event.title, event_path(event) %></li>
+    <% end %>
+  </ul>
+</div>

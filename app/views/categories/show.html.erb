@@ -1,0 +1,12 @@
+<div class="container mt-4">
+  <h1><%= @category.name %></h1>
+
+  <p><%= @category.description %></p>
+
+  <h3>Events</h3>
+  <ul>
+    <% @category.events.each do |event| %>
+      <li><%= link_to event.title, event_path(event) %></li>
+    <% end %>
+  </ul>
+</div>

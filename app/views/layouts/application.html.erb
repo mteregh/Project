@@ -46,7 +46,10 @@
                 <span class="nav-link text-light">Hello, <%= current_user.name %></span>
               </li>
               <li class="nav-item mt-2 mt-lg-0">
-                <%= button_to "Cerrar sesión", destroy_user_session_path, method: :delete,
+                <%= link_to "Edit Profile", edit_user_registration_path, class: "nav-link text-light px-3" %>
+              </li>
+              <li class="nav-item mt-2 mt-lg-0">
+                <%= button_to "Log out", destroy_user_session_path, method: :delete,
                     class: "btn btn-outline-light px-4" %>
               </li>
             <% else %>

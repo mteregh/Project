@@ -11,9 +11,10 @@ class Registration < ApplicationRecord
     cancelled: "cancelled"
   }
 
-  validates :user_id, uniqueness: {
-    scope: :event_id,
-    message: "ya está registrado en este evento"
+  validates :user_id, uniqueness: { 
+    scope: :event_id, 
+    conditions: -> { where.not(status: 'cancelled') },
+    message: "ya está registrado en este evento" 
   }
 
   validate :event_must_be_published, on: :create

@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :publish, :cancel]
 
   def index
@@ -33,13 +34,13 @@ class EventsController < ApplicationController
   end
 
   def edit
-    unless @event.user_id == current_user&.id
+    unless current_user.admin? || @event.user_id == current_user.id
       redirect_to @event, alert: "You do not have permission to edit this event." and return
     end
   end
 
   def update
-    unless @event.user_id == current_user&.id
+    unless current_user.admin? || @event.user_id == current_user.id
       redirect_to @event, alert: "You do not have permission to edit this event." and return
     end
 
@@ -51,7 +52,7 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    unless @event.user_id == current_user&.id
+    unless current_user.admin? || @event.user_id == current_user.id
       redirect_to events_path, alert: "You do not have permission to delete this event." and return
     end
 
@@ -60,7 +61,7 @@ class EventsController < ApplicationController
   end
 
   def publish
-    unless @event.user_id == current_user&.id
+    unless current_user.admin? || @event.user_id == current_user.id
       redirect_to @event, alert: "You do not have permission to publish this event." and return
     end
 
@@ -76,7 +77,7 @@ class EventsController < ApplicationController
   end
 
   def cancel
-    unless @event.user_id == current_user&.id
+    unless current_user.admin? || @event.user_id == current_user.id
       redirect_to @event, alert: "You do not have permission to cancel this event." and return
     end
 
@@ -100,4 +101,5 @@ class EventsController < ApplicationController
       :start_date, :end_date, :max_attendees
     )
   end
+  
 end

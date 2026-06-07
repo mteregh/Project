@@ -1,23 +1,19 @@
 class RegistrationsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_event
 
-  def index
-    @registrations = Registration.all
-  end
-
-  def show
-    @registration = Registration.find(params[:id])
-  end
-
   def create
+    authorize! :create, Registration
+
     unless @event.published?
-      redirect_to @event, alert: "No puedes registrarte en este evento." and return
+      redirect_to @event, alert: "You cannot register for this event." and return
     end
 
     existing = @event.registrations.where(user_id: current_user.id)
                      .where.not(status: "cancelled").first
+
     if existing
-      redirect_to @event, alert: "Ya estás registrado en este evento." and return
+      redirect_to @event, alert: "You are already registered for this event." and return
     end
 
     status = @event.full? ? :waitlisted : :confirmed
@@ -30,31 +26,26 @@ class RegistrationsController < ApplicationController
 
     if @registration.save
       if status == :confirmed
-        redirect_to @event, notice: "¡Registro confirmado exitosamente!"
+        redirect_to @event, notice: "Registration confirmed successfully."
       else
-        redirect_to @event, notice: "El evento está lleno. Fuiste agregado a la lista de espera."
+        redirect_to @event, notice: "The event is full. You have been added to the waitlist."
       end
     else
-      redirect_to @event, alert: "No se pudo completar el registro: #{@registration.errors.full_messages.join(', ')}"
+      redirect_to @event, alert: "Registration could not be completed: #{@registration.errors.full_messages.join(', ')}"
     end
   end
 
   def destroy
     @registration = @event.registrations.find(params[:id])
-
-    unless @registration.user_id == current_user.id
-      redirect_to @event, alert: "No tienes permiso para cancelar este registro." and return
-    end
+    authorize! :destroy, @registration
 
     was_confirmed = @registration.confirmed?
 
     @registration.update!(status: :cancelled)
 
-    if was_confirmed
-      promote_next_waitlisted
-    end
+    promote_next_waitlisted if was_confirmed
 
-    redirect_to @event, notice: "Registro cancelado."
+    redirect_to @event, notice: "Registration cancelled."
   end
 
   private

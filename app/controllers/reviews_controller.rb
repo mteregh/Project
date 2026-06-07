@@ -1,17 +1,12 @@
 class ReviewsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_event
 
-  def index
-    @reviews = Review.all
-  end
-
-  def show
-    @review = Review.find(params[:id])
-  end
-
   def create
+    authorize! :create, Review
+
     unless @event.completed?
-      redirect_to @event, alert: "Solo puedes dejar una reseña en eventos completados." and return
+      redirect_to @event, alert: "You can only review completed events." and return
     end
 
     confirmed_registration = @event.registrations
@@ -19,32 +14,30 @@ class ReviewsController < ApplicationController
                                    .first
 
     unless confirmed_registration
-      redirect_to @event, alert: "Solo los asistentes confirmados pueden dejar una reseña." and return
+      redirect_to @event, alert: "Only confirmed attendees can leave a review." and return
     end
 
     if @event.reviews.exists?(user_id: current_user.id)
-      redirect_to @event, alert: "Ya dejaste una reseña para este evento." and return
+      redirect_to @event, alert: "You have already reviewed this event." and return
     end
 
     @review = @event.reviews.build(review_params)
     @review.user = current_user
 
     if @review.save
-      redirect_to @event, notice: "¡Reseña publicada exitosamente!"
+      redirect_to @event, notice: "Review posted successfully."
     else
-      redirect_to @event, alert: "Error al guardar la reseña: #{@review.errors.full_messages.join(', ')}"
+      redirect_to @event, alert: "Review could not be saved: #{@review.errors.full_messages.join(', ')}"
     end
   end
 
   def destroy
     @review = @event.reviews.find(params[:id])
 
-    unless @review.user_id == current_user.id
-      redirect_to @event, alert: "No tienes permiso para eliminar esta reseña." and return
-    end
+    authorize! :destroy, @review
 
     @review.destroy
-    redirect_to @event, notice: "Reseña eliminada."
+    redirect_to @event, notice: "Review deleted."
   end
 
   private

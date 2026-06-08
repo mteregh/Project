@@ -113,13 +113,19 @@ Registration.create!(
 )
 
 Registration.create!(
+<<<<<<< HEAD
   user: user3,
   event: event1,
+=======
+  user: users[2],
+  event: event_pub,
+>>>>>>> 291b974e31cff64ac115cb7347fa208bfa9181ee
   status: "confirmed",
   registered_at: Time.current
 )
 
 Registration.create!(
+<<<<<<< HEAD
   user: user1,
   event: event3,
   status: "confirmed",
@@ -156,3 +162,54 @@ puts "Admin: admin@eventhub.com / password123"
 puts "User: john@eventhub.com / password123"
 puts "User: emma@eventhub.com / password123"
 puts "User: michael@eventhub.com / password123"
+=======
+  user: users[1],
+  event: event_completed,
+  status: "confirmed",
+  registered_at: Time.current - 6.days
+)
+
+Registration.create!(
+  user: users[2],
+  event: event_completed,
+  status: "confirmed",
+  registered_at: Time.current - 6.days
+)
+
+Registration.create!(
+  user: users[4],
+  event: event_completed,
+  status: "confirmed",
+  registered_at: Time.current - 6.days
+)
+
+Registration.create!(
+  user: users[3],
+  event: event_completed,
+  status: "pending",
+  registered_at: Time.current - 5.days
+)
+
+Review.create!(
+  rating: 5,
+  comment: "Amazing match, so much fun!",
+  user: users[1],
+  event: event_completed
+)
+
+Review.create!(
+  rating: 4,
+  comment: "Good, but the referee was blind.",
+  user: users[2],
+  event: event_completed
+)
+
+Review.create!(
+  rating: 5,
+  comment: "Best event of the year.",
+  user: users[4],
+  event: event_completed
+)
+
+puts "Seed data created successfully! "
+>>>>>>> 291b974e31cff64ac115cb7347fa208bfa9181ee

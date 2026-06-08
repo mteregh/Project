@@ -5,7 +5,6 @@ Category.destroy_all
 Venue.destroy_all
 User.destroy_all
 
-puts "Creating users..."
 
 admin = User.create!(
   name: "Admin User",
@@ -39,13 +38,11 @@ user3 = User.create!(
   role: "regular"
 )
 
-puts "Creating categories..."
 
 technology = Category.create!(name: "Technology")
 sports = Category.create!(name: "Sports")
 education = Category.create!(name: "Education")
 
-puts "Creating venues..."
 
 venue1 = Venue.create!(
   name: "Main Auditorium",
@@ -65,7 +62,6 @@ venue3 = Venue.create!(
   capacity: 300
 )
 
-puts "Creating events..."
 
 event1 = Event.create!(
   title: "Ruby on Rails Workshop",
@@ -100,10 +96,21 @@ event3 = Event.create!(
   start_date: 2.days.ago,
   end_date: 1.day.ago,
   max_attendees: 40,
-  status: "completed"
+  status: "published"
 )
 
-puts "Creating registrations..."
+event4 = Event.create!(
+  title: "Platform Keynote & Future Updates",
+  description: "Annual address by the platform administrators regarding new features.",
+  category: technology,
+  venue: venue1,
+  user: admin,
+  start_date: 15.days.from_now,
+  end_date: 15.days.from_now + 2.hours,
+  max_attendees: 150,
+  status: "published"
+)
+
 
 Registration.create!(
   user: user2,
@@ -133,7 +140,28 @@ Registration.create!(
   registered_at: 2.days.ago
 )
 
-puts "Creating reviews..."
+Registration.create!(
+  user: user1,
+  event: event4,
+  status: "cancelled",
+  registered_at: 1.day.ago
+)
+
+Registration.create!(
+  user: user2,
+  event: event4,
+  status: "waitlisted",
+  registered_at: Time.current
+)
+
+Registration.create!(
+  user: user3,
+  event: event4,
+  status: "waitlisted",
+  registered_at: Time.current
+)
+
+event3.update!(status: "completed")
 
 Review.create!(
   user: user1,
@@ -150,9 +178,10 @@ Review.create!(
 )
 
 puts "Seed data created successfully."
-puts ""
+puts "------------------------------------------------"
 puts "TEST ACCOUNTS"
 puts "Admin: admin@eventhub.com / password123"
 puts "User: john@eventhub.com / password123"
 puts "User: emma@eventhub.com / password123"
 puts "User: michael@eventhub.com / password123"
+puts "------------------------------------------------"

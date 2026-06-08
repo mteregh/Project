@@ -18,6 +18,12 @@ Team Members
 --> María Olivia Urzúa
 
 
+## Test Credentials
+* **Admin:** `admin@eventhub.com` / Password: `password123`
+* **Regular User:** `john@eventhub.com` / Password: `password123`
+* **Regular User:** `emma@eventhub.com` / Password: `password123`
+* **Regular User:** `michael@eventhub.com` / Password: `password123`
+
 Data Model
 <img width="1080" height="965" alt="Relational_Diagram" src="https://github.com/user-attachments/assets/894a2371-1304-4f67-b812-d8f62b28503f" />
 

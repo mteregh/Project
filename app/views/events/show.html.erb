@@ -121,6 +121,32 @@
 
   <h3 class="mt-4">Reviews</h3>
 
+  <% if user_signed_in? && @event.status == "completed" %>
+    <% if @event.registrations.exists?(user: current_user, status: "confirmed") %>
+      <div class="card mb-4 shadow-sm border-0 bg-light">
+        <div class="card-body">
+          <h5 class="card-title">Leave a Review</h5>
+        
+          <%= form_with(model: [@event, Review.new], local: true) do |f| %>
+            <div class="mb-3">
+              <%= f.label :rating, "Rating (1 to 5)", class: "form-label fw-bold" %>
+              <%= f.number_field :rating, in: 1..5, class: "form-control", required: true, style: "max-width: 100px;" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :comment, "Your comment", class: "form-label fw-bold" %>
+              <%= f.text_area :comment, rows: 3, class: "form-control", required: true, placeholder: "Tell us what you thought about the event..." %>
+            </div>
+            <%= f.submit "Submit Review", class: "btn btn-success" %>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <p class="text-muted mb-4"><em>You can only review events you attended.</em></p>
+    <% end %>
+  <% elsif user_signed_in? && @event.status != "completed" %>
+    <p class="text-muted mb-4"><em>Reviews will be enabled once the event is completed.</em></p>
+  <% end %>
+
   <% if @reviews.any? %>
     <% @reviews.each do |review| %>
       <div class="card mb-2">

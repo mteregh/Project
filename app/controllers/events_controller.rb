@@ -3,7 +3,12 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :publish, :cancel]
 
   def index
-    @events = Event.all
+    if current_user.admin?
+      @events = Event.all
+    else
+      @events = Event.where.not(status: 'draft')
+                     .or(Event.where(user: current_user, status: 'draft'))
+    end
   end
 
   def show

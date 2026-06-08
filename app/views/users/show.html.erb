@@ -13,7 +13,7 @@
 
   <h3>Registrations</h3>
   <ul>
-    <% @user.registrations.each do |r| %>
+    <% @user.registrations.where.not(status: 'cancelled').each do |r| %>
       <li><%= link_to r.event.title, event_path(r.event) %></li>
     <% end %>
   </ul>

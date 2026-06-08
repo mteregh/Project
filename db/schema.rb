@@ -85,7 +85,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_25_150717) do
     t.bigint "user_id", null: false
     t.index ["event_id"], name: "index_registrations_on_event_id"
     t.index ["user_id"], name: "index_registrations_on_user_id"
-    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying, 'confirmed'::character varying, 'cancelled'::character varying, 'waitlisted'::character varying]::text[])", name: "check_registrations_status"
+    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying::text, 'confirmed'::character varying::text, 'cancelled'::character varying::text, 'waitlisted'::character varying::text])", name: "check_registrations_status"
   end
 
   create_table "reviews", force: :cascade do |t|

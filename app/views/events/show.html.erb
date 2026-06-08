@@ -1,22 +1,5 @@
 <div class="container mt-4">
 
-<<<<<<< HEAD
-=======
-  <% if notice %>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <%= notice %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-  <% end %>
-
-  <% if alert %>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <%= alert %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-  <% end %>
-
->>>>>>> 291b974e31cff64ac115cb7347fa208bfa9181ee
   <div class="d-flex justify-content-between align-items-start mb-3">
     <h1><%= @event.title %></h1>
     <span class="badge fs-6
@@ -35,17 +18,11 @@
           <p><strong>Category:</strong>
             <%= link_to @event.category.name, category_path(@event.category) %>
           </p>
-<<<<<<< HEAD
 
           <p><strong>Venue:</strong>
             <%= link_to @event.venue.name, venue_path(@event.venue) %>
           </p>
 
-=======
-          <p><strong>Venue:</strong>
-            <%= link_to @event.venue.name, venue_path(@event.venue) %>
-          </p>
->>>>>>> 291b974e31cff64ac115cb7347fa208bfa9181ee
           <p><strong>Organizer:</strong>
             <%= link_to @event.user.name, user_path(@event.user) %>
           </p>
@@ -66,16 +43,11 @@
       </div>
 
       <hr>
-<<<<<<< HEAD
-
-=======
->>>>>>> 291b974e31cff64ac115cb7347fa208bfa9181ee
       <h5>Description</h5>
       <%= @event.description %>
     </div>
   </div>
 
-<<<<<<< HEAD
   <% if user_signed_in? && (can?(:update, @event) || can?(:publish, @event) || can?(:cancel, @event)) %>
     <div class="mb-4 d-flex gap-2 flex-wrap">
       <% if can? :update, @event %>
@@ -93,24 +65,10 @@
             method: :patch,
             class: "btn btn-danger",
             data: { turbo_confirm: "Are you sure you want to cancel this event?" } %>
-=======
-  <% if current_user && @event.user_id == current_user.id %>
-    <div class="mb-4 d-flex gap-2 flex-wrap">
-      <% if @event.draft? %>
-        <%= link_to "Edit", edit_event_path(@event), class: "btn btn-secondary" %>
-        <%= button_to "Publish", publish_event_path(@event), method: :patch, class: "btn btn-success" %>
-        <%= button_to "Cancel Event", cancel_event_path(@event), method: :patch, class: "btn btn-danger",
-            data: { turbo_confirm: "Are you sure you want to cancel this event?" } %>
-      <% elsif @event.published? %>
-        <%= link_to "Edit", edit_event_path(@event), class: "btn btn-secondary" %>
-        <%= button_to "Cancel Event", cancel_event_path(@event), method: :patch, class: "btn btn-danger",
-            data: { turbo_confirm: "Are you sure? All registrations will be cancelled." } %>
->>>>>>> 291b974e31cff64ac115cb7347fa208bfa9181ee
       <% end %>
     </div>
   <% end %>
 
-<<<<<<< HEAD
   <% if user_signed_in? && @event.user_id != current_user.id %>
     <div class="mb-4">
       <% if @event.published? %>
@@ -149,29 +107,6 @@
           <% end %>
         <% end %>
 
-=======
-  <% if current_user && @event.user_id != current_user.id %>
-    <div class="mb-4">
-      <% if @event.published? %>
-        <% if @user_registration.nil? %>
-          <%= button_to "Register", event_registrations_path(@event),
-              method: :post, class: "btn btn-primary" %>
-          <% if @event.full? %>
-            <small class="text-muted ms-2">The event is full — you will be added to the waitlist.</small>
-          <% end %>
-        <% elsif @user_registration.confirmed? %>
-          <span class="badge bg-success fs-6">✓ Registered</span>
-          <%= button_to "Cancel My Registration",
-              event_registration_path(@event, @user_registration),
-              method: :delete, class: "btn btn-outline-danger btn-sm ms-2",
-              data: { turbo_confirm: "Are you sure you want to cancel your registration?" } %>
-        <% elsif @user_registration.waitlisted? %>
-          <span class="badge bg-warning text-dark fs-6">⏳ Waitlisted</span>
-          <%= button_to "Leave Waitlist",
-              event_registration_path(@event, @user_registration),
-              method: :delete, class: "btn btn-outline-secondary btn-sm ms-2" %>
-        <% end %>
->>>>>>> 291b974e31cff64ac115cb7347fa208bfa9181ee
       <% elsif @event.draft? %>
         <span class="text-muted">This event has not been published yet.</span>
       <% elsif @event.ongoing? %>

@@ -1,0 +1,11 @@
+<div class="container mt-4">
+  <h1>Registrations</h1>
+
+  <ul class="list-group">
+    <% @registrations.each do |r| %>
+      <li class="list-group-item">
+        <%= link_to "#{r.user.name} - #{r.event.title}", registration_path(r) %>
+      </li>
+    <% end %>
+  </ul>
+</div>

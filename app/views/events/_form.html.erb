@@ -1,0 +1,68 @@
+<div class="container mt-4">
+  <%= form_with(model: @event, local: true) do |form| %>
+
+    <% if @event.errors.any? %>
+      <div class="alert alert-danger">
+        <h5>Please fix the following errors:</h5>
+        <ul class="mb-0">
+          <% @event.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="mb-3">
+      <%= form.label :title, class: "form-label" %>
+      <%= form.text_field :title,
+            class: "form-control",
+            required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :category_id, "Category", class: "form-label" %>
+      <%= form.collection_select :category_id,
+            Category.all,
+            :id,
+            :name,
+            { prompt: "Select a category" },
+            { class: "form-select", required: true } %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :venue_id, "Venue", class: "form-label" %>
+      <%= form.collection_select :venue_id,
+            Venue.all,
+            :id,
+            :name,
+            { prompt: "Select a venue" },
+            { class: "form-select", required: true } %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :start_date, class: "form-label" %>
+      <%= form.datetime_local_field :start_date,
+            class: "form-control",
+            required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :end_date, class: "form-label" %>
+      <%= form.datetime_local_field :end_date,
+            class: "form-control",
+            required: true,
+            min: @event.start_date&.strftime("%Y-%m-%dT%H:%M") %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :max_attendees, class: "form-label" %>
+      <%= form.number_field :max_attendees,
+            class: "form-control",
+            required: true,
+            min: 1 %>
+    </div>
+
+    <%= form.submit class: "btn btn-primary" %>
+
+  <% end %>
+</div>

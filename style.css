@@ -1,0 +1,14 @@
+.hero-section {
+    background: linear-gradient(135deg, #b90000 0%, #ff4141 100%);
+    color: white;
+    padding: 100px 0;
+}
+
+.about-section {
+    padding: 80px 0;
+    background-color: #f8f9fa;
+}
+
+.contact-section {
+    padding: 80px 0;
+}
